@@ -17,24 +17,11 @@ router.param('id', function (req, res, next, id) {
 });
 
 router.get('/', function (req, res, next) {
-	if(req.query.email) {
-	req.query.email = req.query.email.replace('%40', '@').replace('%2E', '.');
-	console.log(req.query)
-	User.findOne({email:req.query.email}).exec()
-	.then(function(user){
-		res.json(user)
-	})
-	.then(null, next)
-
-
-	}
-	else{
 	User.find({}).exec()
 	.then(function (users) {
 		res.json(users);
 	})
 	.then(null, next);
-	}
 });
 
 
