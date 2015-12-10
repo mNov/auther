@@ -2,6 +2,10 @@ app.factory('AuthFactory', function($http){
 	var Auth = {
 
 	}
+
+	Auth.userId;
+
+
 	Auth.login = function(loginInfo){
 		loginInfo.email = loginInfo.email.replace('@','%40').replace('.','%2E')
 		return $http({

@@ -13,6 +13,7 @@ app.directive('navbar', function ($state, $location, AuthFactory) {
 			scope.logout = function() {
 				AuthFactory.logout()
 				.then(function(data){
+				AuthFactory.userId = null;
 					console.log(data);
 				}).then(null, console.err);
 			};
