@@ -3,7 +3,7 @@
 var app = require('express')();
 var path = require('path');
 var session = require('express-session');
-
+var passport = require('passport');
 
 app.use(require('./logging.middleware'));
 
@@ -23,7 +23,12 @@ app.use(function (req, res, next) {
   next();
 });
 
+app.use(passport.initialize());
+app.use(passport.session());
+
+
 app.use('/api', require('../api/api.router'));
+app.use('/auth', require('../auth/auth.router'));
 
 var validFrontendRoutes = ['/', '/stories', '/users', '/stories/:id', '/users/:id', '/signup', '/login', '/me'];
 var indexPath = path.join(__dirname, '..', '..', 'public', 'index.html');
