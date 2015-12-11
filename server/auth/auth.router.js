@@ -21,8 +21,35 @@ passport.use(
         /*
         --- fill this part in ---
         */
+        // User.findOne({})
+
+
         console.log('---', 'in verification callback', profile, '---');
-        done();
+        console.log("refresh token: ", refreshToken)
+        User.findOne({'google.id':profile.id}).exec()
+        .then(function(user){
+            if (!user) {
+                User.create({
+                email: profile.emails[0].value,
+                name: profile.displayName,
+                google: {
+                    id: profile.id,
+                    name: profile.displayName,
+                    email: profile.emails[0].value,
+                    token: token
+                }
+            })
+            .then(function(user){
+                console.log(user);
+                done();
+            }).then(null, next)
+            }
+            else {
+                console.log(user)
+                done(user);
+            }
+        })
+        
     })
 );
 
@@ -33,8 +60,8 @@ router.get('/google', passport.authenticate('google', { scope : 'email' }));
 // handle the callback after google has authenticated the user
 router.get('/google/callback',
   passport.authenticate('google', {
-    successRedirect : '/home',
-    failureRedirect : '/'
+    successRedirect : '/stories',
+    failureRedirect : '/users'
   }));
 
 module.exports = router;
